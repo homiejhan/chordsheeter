@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   editor.addEventListener("input", () => { renderPreview(); syncKeySelect(); });
   document.getElementById("pdfBtn").addEventListener("click", downloadPdf);
+  document.getElementById("jsonBtn").addEventListener("click", exportSongJson);
 
   initSearch();
   initTranspose();

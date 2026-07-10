@@ -1,15 +1,31 @@
-/* API client — STATIC VERSION for GitHub Pages.
+/* Unified API client — works in two modes, auto-detected at load:
  *
- * Same interface as the server version (searchSongs, getSong, transpose),
- * but everything runs in the browser: the song library is fetched from
- * data/songs.json and transposition is done in JS (a port of
- * backend/app/services/transpose_service.py). No other frontend module
- * knows the difference.
+ *   SERVER MODE  — the FastAPI backend is reachable (local dev or a cloud
+ *                  deploy). All calls go to /api/... endpoints.
+ *   STATIC MODE  — no backend (GitHub Pages). The song library is fetched
+ *                  from data/songs.json, online search calls the iTunes
+ *                  Search API directly, and transposition runs in JS.
+ *
+ * Every other module just calls API.* and never knows the difference.
  */
+
+/* ---------- Mode detection (runs once) ---------- */
+const _modePromise = (async () => {
+  try {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 1500);
+    const r = await fetch("api/health", { signal: ctrl.signal });
+    clearTimeout(t);
+    return r.ok ? "server" : "static";
+  } catch {
+    return "static";
+  }
+})();
+
+/* ================= STATIC-MODE IMPLEMENTATION ================= */
 
 /* ---------- Song library ---------- */
 let _songsPromise = null;
-
 function _loadSongs() {
   if (!_songsPromise) {
     _songsPromise = fetch("data/songs.json").then((r) => {
@@ -20,7 +36,7 @@ function _loadSongs() {
   return _songsPromise;
 }
 
-/* ---------- Transposition engine (JS port) ---------- */
+/* ---------- Transposition engine (JS port of transpose_service.py) ---------- */
 const _NOTE_TO_PC = {
   C: 0, "B#": 0, "C#": 1, Db: 1, D: 2, "D#": 3, Eb: 3,
   E: 4, Fb: 4, F: 5, "E#": 5, "F#": 6, Gb: 6, G: 7,
@@ -96,7 +112,6 @@ function _transposeText(text, semis, targetKey = null) {
   return out;
 }
 
-/* ---------- Public API (same surface as the server version) ---------- */
 /* ---------- Online metadata search (iTunes Search API — free, no key) ---------- */
 async function _searchOnline(title, artist) {
   const term = [title, artist].filter(Boolean).join(" ").trim();
@@ -131,64 +146,97 @@ async function _searchOnline(title, artist) {
   }
 }
 
+async function _staticSearch(title, artist) {
+  const songs = await _loadSongs();
+  const tq = (title || "").trim().toLowerCase();
+  const aq = (artist || "").trim().toLowerCase();
+  if (!tq && !aq) return [];
+  const local = songs
+    .filter(
+      (s) =>
+        (!tq || s.title.toLowerCase().includes(tq)) &&
+        (!aq || s.artist.toLowerCase().includes(aq))
+    )
+    .map(({ id, title, artist, key }) => ({ id, title, artist, key, source: "library" }));
+  local.sort((a, b) => {
+    if (tq) {
+      const ap = a.title.toLowerCase().startsWith(tq) ? 0 : 1;
+      const bp = b.title.toLowerCase().startsWith(tq) ? 0 : 1;
+      if (ap !== bp) return ap - bp;
+    }
+    return a.title.localeCompare(b.title);
+  });
+  const online = await _searchOnline(title, artist);
+  const have = new Set(local.map((s) => s.title.toLowerCase() + "|" + s.artist.toLowerCase()));
+  return local.concat(online.filter((s) => !have.has(s.title.toLowerCase() + "|" + s.artist.toLowerCase())));
+}
+
+async function _staticGet(id) {
+  const songs = await _loadSongs();
+  const song = songs.find((s) => s.id === id);
+  if (!song) throw new Error("Song not found");
+  return song;
+}
+
+async function _staticTranspose({ text, toKey = null, semitones = null }) {
+  const fromKey = _extractKey(text);
+  if (toKey) {
+    if (!fromKey)
+      throw new Error("No {key: ...} directive found — add one, or use the +/− buttons instead.");
+    const semis = _semitonesBetween(fromKey, toKey);
+    if (semis === null) throw new Error("Unrecognized key name.");
+    return { text: _transposeText(text, semis, toKey), from_key: fromKey, to_key: toKey, semitones: semis };
+  }
+  if (semitones !== null) {
+    const semis = ((semitones % 12) + 12) % 12;
+    const newText = _transposeText(text, semis);
+    return { text: newText, from_key: fromKey, to_key: _extractKey(newText), semitones: semis };
+  }
+  throw new Error("Provide either toKey or semitones.");
+}
+
+/* ================= PUBLIC API (mode-aware) ================= */
+
 const API = {
   async searchSongs(title, artist) {
-    const songs = await _loadSongs();
-    const tq = (title || "").trim().toLowerCase();
-    const aq = (artist || "").trim().toLowerCase();
-    if (!tq && !aq) return [];
-    const local = songs
-      .filter(
-        (s) =>
-          (!tq || s.title.toLowerCase().includes(tq)) &&
-          (!aq || s.artist.toLowerCase().includes(aq))
-      )
-      .map(({ id, title, artist, key }) => ({ id, title, artist, key, source: "library" }));
-    local.sort((a, b) => {
-      if (tq) {
-        const ap = a.title.toLowerCase().startsWith(tq) ? 0 : 1;
-        const bp = b.title.toLowerCase().startsWith(tq) ? 0 : 1;
-        if (ap !== bp) return ap - bp;
-      }
-      return a.title.localeCompare(b.title);
-    });
-
-    const online = await _searchOnline(title, artist);
-    // Library wins on duplicates (it has the full chart; online is metadata only)
-    const have = new Set(local.map((s) => s.title.toLowerCase() + "|" + s.artist.toLowerCase()));
-    return local.concat(online.filter((s) => !have.has(s.title.toLowerCase() + "|" + s.artist.toLowerCase())));
+    if ((await _modePromise) === "server") {
+      try {
+        const params = new URLSearchParams();
+        if (title) params.set("title", title);
+        if (artist) params.set("artist", artist);
+        const res = await fetch(`api/songs/search?${params}`);
+        if (res.ok) return res.json();
+      } catch { /* fall through to static */ }
+    }
+    return _staticSearch(title, artist);
   },
 
   async getSong(id) {
-    const songs = await _loadSongs();
-    const song = songs.find((s) => s.id === id);
-    if (!song) throw new Error("Song not found");
-    return song;
+    if ((await _modePromise) === "server") {
+      try {
+        const res = await fetch(`api/songs/${encodeURIComponent(id)}`);
+        if (res.ok) return res.json();
+      } catch { /* fall through to static */ }
+    }
+    return _staticGet(id);
   },
 
   async transpose({ text, toKey = null, semitones = null }) {
-    const fromKey = _extractKey(text);
-
-    if (toKey) {
-      if (!fromKey)
-        throw new Error("No {key: ...} directive found — add one, or use the +/− buttons instead.");
-      const semis = _semitonesBetween(fromKey, toKey);
-      if (semis === null) throw new Error("Unrecognized key name.");
-      return {
-        text: _transposeText(text, semis, toKey),
-        from_key: fromKey, to_key: toKey, semitones: semis,
-      };
+    if ((await _modePromise) === "server") {
+      try {
+        const res = await fetch("api/transpose", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, to_key: toKey, semitones }),
+        });
+        if (res.ok) return res.json();
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.detail || "Transpose failed");
+      } catch (e) {
+        if (e.message && e.message !== "Failed to fetch") throw e; // real validation error
+        /* network failure — fall through to static */
+      }
     }
-
-    if (semitones !== null) {
-      const semis = ((semitones % 12) + 12) % 12;
-      const newText = _transposeText(text, semis);
-      return {
-        text: newText, from_key: fromKey,
-        to_key: _extractKey(newText), semitones: semis,
-      };
-    }
-
-    throw new Error("Provide either toKey or semitones.");
+    return _staticTranspose({ text, toKey, semitones });
   },
 };

@@ -6,34 +6,50 @@ format, transpose to any key, and export clean PDF chord sheets.
 ## Architecture
 
 ```
-chordsheet-app/
-├── backend/                      Python + FastAPI
+chordsheetworkshop/
+├── backend/                      Python + FastAPI (optional — see modes below)
 │   ├── requirements.txt
 │   └── app/
 │       ├── main.py               Entry point; serves API + frontend
 │       ├── routes/songs.py       HTTP layer (search, get, transpose)
 │       ├── services/
-│       │   ├── song_service.py   Search over the song library (pluggable provider)
+│       │   ├── song_service.py   Library search, hot-reloads songs.json
+│       │   ├── online_search.py  iTunes Search API (metadata)
 │       │   └── transpose_service.py  Music theory: keys, semitones, flats/sharps
-│       ├── models/song.py        Pydantic data contracts
-│       └── data/songs.json       Seed library (public domain hymns)
-└── frontend/                     Vanilla JS, modular
+│       └── models/song.py        Pydantic data contracts
+└── docs/                         The frontend — served by GitHub Pages AND the backend
     ├── index.html
+    ├── data/songs.json           THE song library (single source of truth)
     ├── css/styles.css
     └── js/
-        ├── api.js                The only file that talks to the backend
+        ├── api.js                Mode-aware client (server mode / static mode)
         ├── parser.js             ChordPro → structured song
         ├── preview.js            Live paper preview
         ├── pdf.js                jsPDF export (Letter size)
-        ├── search.js             Title + artist search bars, results dropdown
+        ├── search.js             Title + artist search, library + online results
         ├── transpose.js          Key dropdown and half-step +/- controls
+        ├── export.js             Save current song as a songs.json entry
         └── main.js               Bootstrap and wiring
 ```
 
-Layers: **routes** (HTTP only) → **services** (business logic) → **models/data**.
-The frontend mirrors this: one API client, one parser, and independent UI modules.
+One frontend, two modes — `js/api.js` auto-detects at load by pinging
+`/api/health`:
 
-## Run it
+- **Static mode (GitHub Pages):** no backend. Library search reads
+  `data/songs.json`, online search calls the iTunes API from the browser,
+  and transposition runs in JS. Full functionality, zero servers.
+- **Server mode (local dev / cloud deploy):** the FastAPI backend serves
+  `docs/` and handles all `/api` calls. This is the mode that matters once
+  a licensed song catalog (e.g. CCLI SongSelect) is plugged in, since API
+  credentials can't live in static JS.
+
+## Deploy to GitHub Pages
+
+Push the repo, then once: **Settings → Pages → Deploy from a branch →**
+`main` **/** `docs` **→ Save**. The site goes live at
+`https://<username>.github.io/<repo>/` with full functionality.
+
+## Run locally (server mode)
 
 ```bash
 cd backend
@@ -72,8 +88,10 @@ interactive docs).
 Amazing Grace · Be Thou My Vision · Come Thou Fount · Holy Holy Holy ·
 It Is Well With My Soul · What a Friend We Have in Jesus · Doxology
 
-All public domain. To add songs, append entries to `backend/app/data/songs.json`
-(id, title, artist, key, body in ChordPro).
+All public domain. To add a song: write or edit it in the app, click
+**Save JSON**, and paste the downloaded object into the array in
+`docs/data/songs.json`. It's searchable immediately (backend hot-reloads;
+on Pages it appears after you push).
 
 ## Plugging in a real song catalog later
 
