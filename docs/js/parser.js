@@ -1,5 +1,5 @@
 /* ChordPro parser — turns editor text into a structured song object. */
-const SECTION_RE = /^(verse|chorus|pre[- ]?chorus|bridge|intro|outro|tag|interlude|instrumental|refrain|ending|vamp|turnaround)(\s*\d+)?\s*:?\s*$/i;
+const SECTION_RE = /^(verse|chorus|pre[- ]?chorus|bridge|intro|outro|tag|interlude|instrumental|refrain|ending|vamp|turn|turnaround)(\s*\d+)?\s*:?\s*$/i;
 
 function parseSong(text) {
   const song = { title: "", subtitle: "", key: "", tempo: "", time: "", lines: [] };
