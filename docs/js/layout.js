@@ -75,9 +75,10 @@ function _wrapSegRows(segs, colW, meas, m) {
   if (cur.length) rows.push(cur);
   return rows.map((r) => {
     const hasChord = r.some((s) => s.chord);
+    const hasLyric = r.some((s) => s.lyric.trim());
     return {
-      type: "row", segs: r, hasChord,
-      h: (hasChord ? m.chordH : 0) + m.lyricH + m.pairGap,
+      type: "row", segs: r, hasChord, hasLyric,
+      h: (hasChord ? m.chordH : 0) + (hasLyric ? m.lyricH : 0) + m.pairGap,
     };
   });
 }
@@ -123,7 +124,7 @@ function computeLayout(song, bodySize) {
   for (const ln of song.lines) {
     if (ln.type === "blank") blocks.push({ type: "blank", h: m.blankH });
     else if (ln.type === "section")
-      blocks.push({ type: "section", text: ln.text, note: ln.note || "", h: m.sectionPre + m.sectionH });
+      blocks.push({ type: "section", text: ln.text, h: m.sectionPre + m.sectionH });
     else if (ln.type === "comment")
       blocks.push({ type: "comment", text: ln.text, h: m.commentH });
     else if (ln.type === "lyric")

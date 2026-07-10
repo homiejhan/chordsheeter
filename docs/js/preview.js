@@ -47,8 +47,7 @@ function renderPreview() {
         if (b.type === "blank") {
           ch += `<div style="height:${b.h}px"></div>`;
         } else if (b.type === "section") {
-          const note = b.note ? `<span class="pv-secnote">${escHtml(b.note)}</span>` : "";
-          ch += `<div class="pv-section" style="height:${b.h}px;padding-top:${m.sectionPre}px;font-size:${m.sectionSize}px">${escHtml(b.text)}${note}</div>`;
+          ch += `<div class="pv-section" style="height:${b.h}px;padding-top:${m.sectionPre}px;font-size:${m.sectionSize}px">${escHtml(b.text)}</div>`;
         } else if (b.type === "comment") {
           ch += `<div class="pv-comment" style="height:${b.h}px;font-size:${m.commentSize}px">${escHtml(b.text)}</div>`;
         } else if (b.type === "lyricrow") {
@@ -60,7 +59,9 @@ function renderPreview() {
             segs += `<span class="pv-seg" style="left:${s.x}px;width:${s.w}px">`;
             if (b.hasChord)
               segs += `<span class="pv-chord" style="top:${chordTop}px;height:${m.chordH}px;font-size:${m.chordSize}px;line-height:${m.chordH}px">${escHtml(s.chord)}</span>`;
-            segs += `<span class="pv-lyr" style="top:${lyricTop}px;font-size:${m.lyricSize}px;line-height:${m.lyricH}px">${escHtml(s.lyric)}</span></span>`;
+            if (b.hasLyric)
+              segs += `<span class="pv-lyr" style="top:${lyricTop}px;font-size:${m.lyricSize}px;line-height:${m.lyricH}px">${escHtml(s.lyric)}</span>`;
+            segs += `</span>`;
           }
           ch += `<div class="pv-row" style="height:${b.h}px">${segs}</div>`;
         }

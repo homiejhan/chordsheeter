@@ -1,5 +1,5 @@
 /* ChordPro parser — turns editor text into a structured song object. */
-const SECTION_RE = /^(verse|chorus|pre[- ]?chorus|bridge|intro|outro|tag|interlude|instrumental|refrain|ending|vamp|turnaround)(\s*\d+)?\s*(\([^)]*\)|\d+x|x\d+)?\s*:?\s*$/i;
+const SECTION_RE = /^(verse|chorus|pre[- ]?chorus|bridge|intro|outro|tag|interlude|instrumental|refrain|ending|vamp|turnaround)(\s*\d+)?\s*:?\s*$/i;
 
 function parseSong(text) {
   const song = { title: "", subtitle: "", key: "", tempo: "", time: "", lines: [] };
@@ -24,13 +24,8 @@ function parseSong(text) {
 
     if (line.trim() === "") { song.lines.push({ type: "blank" }); continue; }
 
-    const sm = line.trim().match(SECTION_RE);
-    if (sm) {
-      song.lines.push({
-        type: "section",
-        text: (sm[1] + (sm[2] || "")).trim(),
-        note: sm[3] || "",
-      });
+    if (SECTION_RE.test(line.trim())) {
+      song.lines.push({ type: "section", text: line.trim().replace(/:$/, "") });
       continue;
     }
 
