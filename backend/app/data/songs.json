@@ -1,0 +1,65 @@
+[
+  {
+    "id": "amazing-grace",
+    "title": "Amazing Grace",
+    "artist": "John Newton",
+    "key": "G",
+    "tempo": "72",
+    "time": "3/4",
+    "body": "Verse 1\nA[G]mazing grace, how [C]sweet the [G]sound\nThat saved a wretch like [D]me\nI [G]once was lost, but [C]now am [G]found\nWas [Em]blind but [D]now I [G]see\n\nVerse 2\n'Twas [G]grace that taught my [C]heart to [G]fear\nAnd grace my fears re[D]lieved\nHow [G]precious did that [C]grace ap[G]pear\nThe [Em]hour I [D]first be[G]lieved\n\nVerse 3\nThrough [G]many dangers, [C]toils and [G]snares\nI have already [D]come\n'Tis [G]grace hath brought me [C]safe thus [G]far\nAnd [Em]grace will [D]lead me [G]home\n\nVerse 4\nWhen [G]we've been there ten [C]thousand [G]years\nBright shining as the [D]sun\nWe've [G]no less days to [C]sing God's [G]praise\nThan [Em]when we'd [D]first be[G]gun"
+  },
+  {
+    "id": "be-thou-my-vision",
+    "title": "Be Thou My Vision",
+    "artist": "Traditional Irish",
+    "key": "D",
+    "tempo": "80",
+    "time": "3/4",
+    "body": "Verse 1\n[D]Be Thou my [A/C#]vision, O [Bm]Lord of my [G]heart\n[D]Naught be all [G]else to me [A]save that Thou [D]art\n[Bm]Thou my best [G]thought, by [D]day or by [A]night\n[D]Waking or [G]sleeping, Thy [A]presence my [D]light\n\nVerse 2\n[D]Be Thou my [A/C#]wisdom, and [Bm]Thou my true [G]word\n[D]I ever [G]with Thee and [A]Thou with me, [D]Lord\n[Bm]Thou my great [G]Father, and [D]I Thy true [A]son\n[D]Thou in me [G]dwelling, and [A]I with Thee [D]one\n\nVerse 3\n[D]High King of [A/C#]heaven, my [Bm]victory [G]won\n[D]May I reach [G]heaven's joys, O [A]bright heaven's [D]Sun\n[Bm]Heart of my [G]own heart, what[D]ever be[A]fall\n[D]Still be my [G]vision, O [A]Ruler of [D]all"
+  },
+  {
+    "id": "come-thou-fount",
+    "title": "Come Thou Fount of Every Blessing",
+    "artist": "Robert Robinson",
+    "key": "D",
+    "tempo": "84",
+    "time": "3/4",
+    "body": "Verse 1\n[D]Come Thou fount of [G]every [D]blessing\nTune my [G]heart to [D]sing Thy [A]grace\n[D]Streams of mercy, [G]never [D]ceasing\nCall for [G]songs of [A]loudest [D]praise\nTeaching me the [G]tuneful [D]sonnet\nSung by [G]flaming [D]tongues a[A]bove\n[D]Praise the mount, I'm [G]fixed up[D]on it\nMount of [G]Thy re[A]deeming [D]love\n\nVerse 2\n[D]Here I raise my [G]Ebe[D]nezer\nHither [G]by Thy [D]help I'm [A]come\n[D]And I hope by [G]Thy good [D]pleasure\nSafely [G]to ar[A]rive at [D]home\nJesus sought me [G]when a [D]stranger\nWandering [G]from the [D]fold of [A]God\n[D]He to rescue [G]me from [D]danger\nInter[G]posed His [A]precious [D]blood\n\nVerse 3\n[D]O to grace how [G]great a [D]debtor\nDaily [G]I'm con[D]strained to [A]be\n[D]Let Thy goodness, [G]like a [D]fetter\nBind my [G]wandering [A]heart to [D]Thee\nProne to wander, [G]Lord I [D]feel it\nProne to [G]leave the [D]God I [A]love\n[D]Here's my heart, O [G]take and [D]seal it\nSeal it [G]for Thy [A]courts a[D]bove"
+  },
+  {
+    "id": "holy-holy-holy",
+    "title": "Holy Holy Holy",
+    "artist": "Reginald Heber",
+    "key": "D",
+    "tempo": "76",
+    "time": "4/4",
+    "body": "Verse 1\n[D]Holy, holy, [Bm]holy! [D]Lord God Al[A]mighty!\n[D]Early in the [G]morning our [D]song shall [A]rise to [D]Thee\n[D]Holy, holy, [Bm]holy! [D]Merciful and [A]mighty!\n[D]God in three [G]Persons, [D]blessed [A]Trini[D]ty!\n\nVerse 2\n[D]Holy, holy, [Bm]holy! [D]All the saints a[A]dore Thee\n[D]Casting down their [G]golden crowns a[D]round the [A]glassy [D]sea\n[D]Cherubim and [Bm]seraphim [D]falling down be[A]fore Thee\n[D]Which wert and [G]art and [D]ever[A]more shalt [D]be\n\nVerse 3\n[D]Holy, holy, [Bm]holy! Though the [D]darkness [A]hide Thee\n[D]Though the eye of [G]sinful man Thy [D]glory [A]may not [D]see\n[D]Only Thou art [Bm]holy, [D]there is none be[A]side Thee\n[D]Perfect in [G]power, in [D]love and [A]puri[D]ty"
+  },
+  {
+    "id": "it-is-well",
+    "title": "It Is Well With My Soul",
+    "artist": "Horatio Spafford",
+    "key": "C",
+    "tempo": "72",
+    "time": "4/4",
+    "body": "Verse 1\nWhen [C]peace like a [F]river at[C]tendeth my [G]way\nWhen [C]sorrows like [F]sea billows [G]roll\nWhat[C]ever my [C/E]lot, Thou hast [F]taught me to [Dm]say\nIt is [C]well, [G]it is well with my [C]soul\n\nChorus\nIt is [C]well ([F]it is [C]well)\nWith my [G]soul (with my [C]soul)\nIt is [F]well, it is [C]well [G]with my [C]soul\n\nVerse 2\nThough [C]Satan should [F]buffet, though [C]trials should [G]come\nLet [C]this blest as[F]surance con[G]trol\nThat [C]Christ hath re[C/E]garded my [F]helpless es[Dm]tate\nAnd hath [C]shed His own [G]blood for my [C]soul\n\nVerse 3\nAnd [C]Lord, haste the [F]day when my [C]faith shall be [G]sight\nThe [C]clouds be rolled [F]back as a [G]scroll\nThe [C]trump shall re[C/E]sound and the [F]Lord shall des[Dm]cend\nEven [C]so, it is [G]well with my [C]soul"
+  },
+  {
+    "id": "what-a-friend",
+    "title": "What a Friend We Have in Jesus",
+    "artist": "Joseph Scriven",
+    "key": "F",
+    "tempo": "80",
+    "time": "4/4",
+    "body": "Verse 1\n[F]What a friend we [Bb]have in [F]Jesus\nAll our sins and [C]griefs to [F]bear\nWhat a privilege to [Bb]car[F]ry\nEverything to [C]God in [F]prayer\n[C]O what peace we [F]often for[Bb]feit\n[F]O what needless [C]pain we [F]bear\nAll because we [Bb]do not [F]carry\nEverything to [C]God in [F]prayer\n\nVerse 2\n[F]Have we trials and [Bb]tempta[F]tions?\nIs there trouble [C]any[F]where?\nWe should never be dis[Bb]cour[F]aged\nTake it to the [C]Lord in [F]prayer\n[C]Can we find a [F]friend so [Bb]faithful\n[F]Who will all our [C]sorrows [F]share?\nJesus knows our [Bb]every [F]weakness\nTake it to the [C]Lord in [F]prayer"
+  },
+  {
+    "id": "doxology",
+    "title": "Doxology",
+    "artist": "Thomas Ken",
+    "key": "G",
+    "tempo": "68",
+    "time": "4/4",
+    "body": "Verse 1\n[G]Praise God from [D]whom all [Em]blessings [C]flow\n[G]Praise Him all [C]creatures [D]here be[G]low\n[Em]Praise Him a[D]bove ye [G]heavenly [D]host\n[G]Praise Father, [C]Son and [D]Holy [G]Ghost\nA[C]men, [G/D]A[D]men, [G]Amen"
+  }
+]
