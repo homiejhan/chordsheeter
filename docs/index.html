@@ -50,9 +50,17 @@ Verse 1
   </div>
 
   <div class="pane preview-pane" id="previewPane">
-    <div class="pane-label">Preview</div>
+    <div class="pane-label">
+      <span>Preview <span id="pageCount"></span></span>
+      <span class="font-ctl">
+        <span class="fc-label">Text size</span>
+        <button class="fc-btn" id="fontDown" title="Smaller body text">A−</button>
+        <span class="fc-val" id="fontVal">11</span>
+        <button class="fc-btn" id="fontUp" title="Larger body text">A+</button>
+      </span>
+    </div>
     <div class="preview-scroll">
-      <div class="paper" id="paper"></div>
+      <div id="pages"></div>
     </div>
   </div>
 </main>
@@ -66,6 +74,7 @@ Verse 1
 
 <script src="js/api.js"></script>
 <script src="js/parser.js"></script>
+<script src="js/layout.js"></script>
 <script src="js/preview.js"></script>
 <script src="js/pdf.js"></script>
 <script src="js/export.js"></script>

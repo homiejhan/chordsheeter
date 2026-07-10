@@ -17,6 +17,23 @@ document.addEventListener("DOMContentLoaded", () => {
   initSearch();
   initTranspose();
 
+  // Body text size controls (title/artist/key stay fixed)
+  const fontVal = document.getElementById("fontVal");
+  function applyFontSize(delta) {
+    fontVal.textContent = setBodySize(getBodySize() + delta);
+    renderPreview();
+  }
+  document.getElementById("fontUp").addEventListener("click", () => applyFontSize(1));
+  document.getElementById("fontDown").addEventListener("click", () => applyFontSize(-1));
+  fontVal.textContent = getBodySize();
+
+  // Re-scale pages when the pane resizes
+  let rt = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(rt);
+    rt = setTimeout(renderPreview, 150);
+  });
+
   // Mobile tabs
   const tabE = document.getElementById("tabEditor"), tabP = document.getElementById("tabPreview");
   const paneE = document.getElementById("editorPane"), paneP = document.getElementById("previewPane");

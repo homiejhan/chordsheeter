@@ -24,8 +24,9 @@ chordsheetworkshop/
     └── js/
         ├── api.js                Mode-aware client (server mode / static mode)
         ├── parser.js             ChordPro → structured song
-        ├── preview.js            Live paper preview
-        ├── pdf.js                jsPDF export (Letter size)
+        ├── layout.js             Shared layout engine: pages, 2 columns, breaks
+        ├── preview.js            True-size paginated preview (renders the layout)
+        ├── pdf.js                jsPDF export (renders the same layout)
         ├── search.js             Title + artist search, library + online results
         ├── transpose.js          Key dropdown and half-step +/- controls
         ├── export.js             Save current song as a songs.json entry
@@ -76,7 +77,14 @@ Open http://localhost:8000
    keys get flat spellings (Bb, Eb) while sharp keys get sharps.
 3. **Transpose by half step** — the − / + buttons shift everything one semitone.
 4. **Edit** — change lyrics or chords in the editor; the preview updates live.
-5. **PDF** — click *Download PDF*. The filename includes the current key
+   The preview shows true US Letter pages: content fills the left column,
+   then the right column, then a new page — page breaks appear exactly where
+   the PDF will break, because preview and PDF render the same layout.
+5. **Text size** — use the A− / A+ control above the preview to resize all
+   body text (lyrics, chords, section labels, comments) from 8–16pt. The
+   title, artist, and key stay fixed. Pagination updates live and the PDF
+   uses the same size.
+6. **PDF** — click *Download PDF*. The filename includes the current key
    (e.g. `Amazing-Grace-Bb.pdf`), so you can export the same song in several
    keys for different vocalists.
 
