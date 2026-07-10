@@ -165,6 +165,7 @@ textarea::selection{background:#33507a;}
   color:var(--section);overflow:hidden;white-space:nowrap;box-sizing:border-box;
 }
 .pv-comment{font-style:italic;color:#5d6875;overflow:hidden;white-space:nowrap;}
+.pv-secnote{font-weight:400;text-transform:none;letter-spacing:0;color:#5d6875;margin-left:6px;}
 .pv-lyricrow{white-space:pre;overflow:visible;}
 .pv-row{position:relative;}
 .pv-seg{position:absolute;top:0;height:100%;}

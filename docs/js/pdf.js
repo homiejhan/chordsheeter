@@ -40,7 +40,13 @@ function downloadPdf() {
       for (const b of col.blocks) {
         if (b.type === "section") {
           doc.setFont("helvetica", "bold"); doc.setFontSize(m.sectionSize); doc.setTextColor(138, 63, 252);
-          doc.text(b.text.toUpperCase(), col.x, y + m.sectionPre + m.sectionSize, { charSpace: 0.8 });
+          const label = b.text.toUpperCase();
+          doc.text(label, col.x, y + m.sectionPre + m.sectionSize, { charSpace: 0.8 });
+          if (b.note) {
+            const w = doc.getTextWidth(label) + 0.8 * label.length;
+            doc.setFont("helvetica", "normal"); doc.setTextColor(93, 104, 117);
+            doc.text(b.note, col.x + w + 5, y + m.sectionPre + m.sectionSize);
+          }
         } else if (b.type === "comment") {
           doc.setFont("helvetica", "italic"); doc.setFontSize(m.commentSize); doc.setTextColor(93, 104, 117);
           doc.text(b.text, col.x, y + m.commentSize + 2);

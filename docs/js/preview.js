@@ -47,7 +47,8 @@ function renderPreview() {
         if (b.type === "blank") {
           ch += `<div style="height:${b.h}px"></div>`;
         } else if (b.type === "section") {
-          ch += `<div class="pv-section" style="height:${b.h}px;padding-top:${m.sectionPre}px;font-size:${m.sectionSize}px">${escHtml(b.text)}</div>`;
+          const note = b.note ? `<span class="pv-secnote">${escHtml(b.note)}</span>` : "";
+          ch += `<div class="pv-section" style="height:${b.h}px;padding-top:${m.sectionPre}px;font-size:${m.sectionSize}px">${escHtml(b.text)}${note}</div>`;
         } else if (b.type === "comment") {
           ch += `<div class="pv-comment" style="height:${b.h}px;font-size:${m.commentSize}px">${escHtml(b.text)}</div>`;
         } else if (b.type === "lyricrow") {
