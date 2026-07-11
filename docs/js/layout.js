@@ -60,24 +60,54 @@ function _measurer() {
 
 /* ---------- Wrapping ---------- */
 
-/* Chord/lyric segments -> rows fitting the column, each seg positioned. */
+/* Chord/lyric segments -> rows. The lyric is ONE continuous string (never
+ * stretched or chopped), and chords float above it: each chord anchors at
+ * its syllable's x position, pushed right only as needed to clear the
+ * previous chord. */
 function _wrapSegRows(segs, colW, meas, m) {
+  const CHORD_GAP = m.chordPad;
   const rows = [];
-  let cur = [], x = 0;
+  let cur = { lyric: "", chords: [], chordEnd: -CHORD_GAP };
+
+  const pushRow = () => {
+    cur.lyric = cur.lyric.replace(/\s+$/, "");
+    rows.push(cur);
+    cur = { lyric: "", chords: [], chordEnd: -CHORD_GAP };
+  };
+
   for (const seg of segs) {
-    const lw = meas.lyric(seg.lyric, m.lyricSize);
-    const cw = seg.chord ? meas.chord(seg.chord, m.chordSize) + m.chordPad : 0;
-    const w = Math.max(lw, cw);
-    if (x + w > colW && cur.length) { rows.push(cur); cur = []; x = 0; }
-    cur.push({ chord: seg.chord, lyric: seg.lyric, x, w });
-    x += w;
+    /* Place the chord, anchored where its lyric will start; wrap first if
+     * the chord itself can't fit on this row. */
+    if (seg.chord) {
+      const cw = meas.chord(seg.chord, m.chordSize);
+      let chordX = Math.max(meas.lyric(cur.lyric, m.lyricSize), cur.chordEnd + CHORD_GAP);
+      if (chordX + cw > colW && (cur.lyric.trim() || cur.chords.length)) {
+        pushRow();
+        chordX = 0;
+      }
+      cur.chords.push({ text: seg.chord, x: chordX });
+      cur.chordEnd = chordX + cw;
+    }
+
+    /* Append the lyric word by word, wrapping whenever the next word
+     * would exceed the column. The lyric string itself is never altered —
+     * only split at whitespace between rows. */
+    for (const tok of seg.lyric.split(/(\s+)/)) {
+      if (!tok) continue;
+      if (meas.lyric(cur.lyric + tok, m.lyricSize) > colW && cur.lyric.trim()) {
+        pushRow();
+        if (!tok.trim()) continue; // never start a row with whitespace
+      }
+      cur.lyric += tok;
+    }
   }
-  if (cur.length) rows.push(cur);
+  if (cur.lyric.trim() || cur.chords.length) pushRow();
+
   return rows.map((r) => {
-    const hasChord = r.some((s) => s.chord);
-    const hasLyric = r.some((s) => s.lyric.trim());
+    const hasChord = r.chords.length > 0;
+    const hasLyric = r.lyric.trim().length > 0;
     return {
-      type: "row", segs: r, hasChord, hasLyric,
+      type: "row", lyric: r.lyric, chords: r.chords, hasChord, hasLyric,
       h: (hasChord ? m.chordH : 0) + (hasLyric ? m.lyricH : 0) + m.pairGap,
     };
   });

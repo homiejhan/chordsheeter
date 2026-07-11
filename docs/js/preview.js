@@ -54,17 +54,13 @@ function renderPreview() {
         } else if (b.type === "lyricrow") {
           ch += `<div class="pv-lyricrow" style="height:${b.h}px;font-size:${m.lyricSize}px;line-height:${m.lyricH}px">${escHtml(b.text)}</div>`;
         } else if (b.type === "row") {
-          const chordTop = 0, lyricTop = b.hasChord ? m.chordH : 0;
-          let segs = "";
-          for (const s of b.segs) {
-            segs += `<span class="pv-seg" style="left:${s.x}px;width:${s.w}px">`;
-            if (b.hasChord)
-              segs += `<span class="pv-chord" style="top:${chordTop}px;height:${m.chordH}px;font-size:${m.chordSize}px;line-height:${m.chordH}px">${escHtml(s.chord)}</span>`;
-            if (b.hasLyric)
-              segs += `<span class="pv-lyr" style="top:${lyricTop}px;font-size:${m.lyricSize}px;line-height:${m.lyricH}px">${escHtml(s.lyric)}</span>`;
-            segs += `</span>`;
-          }
-          ch += `<div class="pv-row" style="height:${b.h}px">${segs}</div>`;
+          const lyricTop = b.hasChord ? m.chordH : 0;
+          let inner = "";
+          for (const c of b.chords)
+            inner += `<span class="pv-chord" style="left:${c.x}px;top:0;height:${m.chordH}px;font-size:${m.chordSize}px;line-height:${m.chordH}px">${escHtml(c.text)}</span>`;
+          if (b.hasLyric)
+            inner += `<span class="pv-lyr" style="left:0;top:${lyricTop}px;font-size:${m.lyricSize}px;line-height:${m.lyricH}px">${escHtml(b.lyric)}</span>`;
+          ch += `<div class="pv-row" style="height:${b.h}px">${inner}</div>`;
         }
       }
       inner += `<div class="pv-col" style="left:${col.x}px;top:${col.top}px;width:${layout.colW}px">${ch}</div>`;

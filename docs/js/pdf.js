@@ -55,15 +55,13 @@ function downloadPdf() {
           doc.text(b.text, col.x, y + m.lyricH - 3);
         } else if (b.type === "row") {
           const lyricTop = b.hasChord ? m.chordH : 0;
-          for (const s of b.segs) {
-            if (s.chord) {
-              doc.setFont("helvetica", "bold"); doc.setFontSize(m.chordSize); doc.setTextColor(22, 80, 200);
-              doc.text(s.chord, col.x + s.x, y + m.chordH - 2.5);
-            }
-            if (s.lyric) {
-              doc.setFont("helvetica", "normal"); doc.setFontSize(m.lyricSize); doc.setTextColor(22, 34, 47);
-              doc.text(s.lyric, col.x + s.x, y + lyricTop + m.lyricH - 3);
-            }
+          if (b.hasChord) {
+            doc.setFont("helvetica", "bold"); doc.setFontSize(m.chordSize); doc.setTextColor(22, 80, 200);
+            for (const c of b.chords) doc.text(c.text, col.x + c.x, y + m.chordH - 2.5);
+          }
+          if (b.hasLyric) {
+            doc.setFont("helvetica", "normal"); doc.setFontSize(m.lyricSize); doc.setTextColor(22, 34, 47);
+            doc.text(b.lyric, col.x, y + lyricTop + m.lyricH - 3);
           }
         }
         y += b.h;
