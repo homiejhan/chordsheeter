@@ -29,12 +29,39 @@
     <button class="btn btn-ghost btn-step" id="stepUp" title="Up a half step">+</button>
   </div>
 
+  <button class="btn btn-ghost" id="bulkImportBtn" title="Paste a multi-song chord chart export and convert it in bulk">Bulk Import</button>
   <button class="btn btn-ghost" id="jsonBtn" title="Download this song as a songs.json library entry">Save JSON</button>
   <button class="btn btn-primary" id="pdfBtn">Download PDF</button>
 </header>
 
 <div class="search-results" id="searchResults" hidden>
   <div class="sr-inner" id="srInner"></div>
+</div>
+
+<div class="modal-overlay" id="bulkModal" hidden>
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Bulk Import</h2>
+      <button class="modal-x" id="bulkClose" aria-label="Close">✕</button>
+    </div>
+    <p class="modal-hint">
+      Paste a multi-song chord chart export below (e.g. copied out of a Planning Center /
+      CCLI SongSelect PDF — chords on their own line above the lyrics, with a
+      <code>Title [Key, tempo bpm, time]</code> header per song). Everything runs in your
+      browser; nothing you paste here is sent anywhere. Review each result before saving —
+      hand-formatted charts vary, so this is a best-effort conversion.
+    </p>
+    <textarea id="bulkInput" spellcheck="false" placeholder="Paste one or more songs here…"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-primary" id="bulkConvertBtn">Convert</button>
+      <span class="modal-status" id="bulkStatus"></span>
+    </div>
+    <div class="bi-results" id="bulkResults"></div>
+    <div class="modal-actions" id="bulkDownloadRow" hidden>
+      <button class="btn btn-primary" id="bulkDownloadBtn">Download all as JSON</button>
+      <span class="modal-hint" style="margin:0">Append the array into <code>docs/data/songs.json</code>.</span>
+    </div>
+  </div>
 </div>
 
 <main>
@@ -78,6 +105,8 @@ Verse 1
 <script src="js/preview.js"></script>
 <script src="js/pdf.js"></script>
 <script src="js/export.js"></script>
+<script src="js/bulkImport.js"></script>
+<script src="js/bulkImportUI.js"></script>
 <script src="js/search.js"></script>
 <script src="js/transpose.js"></script>
 <script src="js/main.js"></script>
