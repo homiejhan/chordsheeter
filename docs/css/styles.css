@@ -174,6 +174,45 @@ textarea::selection{background:#33507a;}
 
 .empty-state{text-align:center;color:#93a0ae;padding-top:120px;font-size:14px;line-height:1.7;}
 
+/* ---------- Bulk Import modal ---------- */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(15,22,30,.55);
+  display:flex;align-items:center;justify-content:center;z-index:70;padding:20px;
+}
+.modal-box{
+  background:var(--paper);color:var(--ink);border-radius:12px;
+  width:min(680px,100%);max-height:min(88vh,820px);
+  display:flex;flex-direction:column;padding:20px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.modal-head h2{font-size:17px;font-weight:800;}
+.modal-x{
+  background:none;border:none;color:var(--muted);font-size:15px;cursor:pointer;
+  padding:4px 8px;border-radius:6px;
+}
+.modal-x:hover{background:#f0f2f5;color:var(--ink);}
+.modal-hint{font-size:12.5px;color:var(--muted);line-height:1.55;margin:6px 0 12px;}
+.modal-hint code{background:#f0f2f5;border-radius:4px;padding:1px 5px;font-size:11.5px;}
+#bulkInput{
+  width:100%;min-height:160px;max-height:260px;resize:vertical;
+  border:1px solid #d9dee5;border-radius:8px;padding:10px 12px;
+  font:12.5px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;color:var(--ink);
+}
+#bulkInput:focus{outline:none;border-color:var(--accent);}
+.modal-actions{display:flex;align-items:center;gap:12px;margin:12px 0;}
+.modal-status{font-size:12.5px;color:var(--muted);}
+.bi-results{overflow-y:auto;display:flex;flex-direction:column;gap:8px;max-height:280px;}
+.bi-card{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border:1px solid #e4e8ed;border-radius:8px;padding:9px 12px;
+}
+.bi-card-text{display:flex;flex-direction:column;gap:1px;min-width:0;}
+.bi-card-title{font-size:13.5px;font-weight:700;color:var(--ink);}
+.bi-card-artist{font-size:11.5px;color:var(--muted);}
+.bi-card-lines{font-size:10.5px;color:#9aa5b1;text-transform:uppercase;letter-spacing:.04em;}
+.bi-card-btn{flex-shrink:0;padding:6px 12px;font-size:12px;color:var(--ink);border-color:#d9dee5;}
+.bi-card-btn:hover{background:#f0f2f5;}
+
 /* ---------- Toast ---------- */
 .toast{
   position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);
